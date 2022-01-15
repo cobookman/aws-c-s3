@@ -355,7 +355,9 @@ struct aws_s3_client *aws_s3_client_new(
 #endif
         }
     }
-
+    if (client_config->interface != NULL && strlen(client_config->interface) != 0) {
+        client->interface = client_config->interface;
+    }
     if (client_config->throughput_target_gbps != 0.0) {
         *((double *)&client->throughput_target_gbps) = client_config->throughput_target_gbps;
     } else {
@@ -643,6 +645,7 @@ struct aws_s3_meta_request *aws_s3_client_make_meta_request(
             .shutdown_callback = client->vtable->endpoint_shutdown_callback,
             .client_bootstrap = client->client_bootstrap,
             .tls_connection_options = client->tls_connection_options,
+            .interface = client->interface,
             .dns_host_address_ttl_seconds = s_dns_host_address_ttl_seconds,
             .user_data = client,
             .max_connections = aws_s3_client_get_max_active_connections(client, NULL),
