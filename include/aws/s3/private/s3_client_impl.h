@@ -58,7 +58,7 @@ struct aws_s3_endpoint_options {
     const struct aws_tls_connection_options *tls_connection_options;
 
     /* If set, bind to a specific network interface */
-    const char* interface;
+    struct aws_string *interface;
 
     /* DNS TTL to use for addresses for this endpoint. */
     size_t dns_host_address_ttl_seconds;
@@ -168,7 +168,7 @@ struct aws_s3_client {
     struct aws_tls_connection_options *tls_connection_options;
 
     /* If set, bind to a specific network interface */
-    const char* interface;
+    struct aws_string *interface;
 
     /* Cached signing config. Can be NULL if no signing config was specified. */
     struct aws_cached_signing_config_aws *cached_signing_config;

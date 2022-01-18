@@ -311,6 +311,9 @@ struct aws_s3_client *aws_s3_client_new(
     /* Make a copy of the region string. */
     client->region = aws_string_new_from_array(allocator, client_config->region.ptr, client_config->region.len);
 
+    /* Make a copy of the interface string. */
+    client->interface = aws_string_new_from_array(allocator, client_config->interface.ptr, client_config->interface.len);
+
     if (client_config->part_size != 0) {
         *((size_t *)&client->part_size) = client_config->part_size;
     } else {
@@ -354,9 +357,6 @@ struct aws_s3_client *aws_s3_client_new(
             aws_tls_ctx_options_clean_up(&default_tls_ctx_options);
 #endif
         }
-    }
-    if (client_config->interface != NULL && strlen(client_config->interface) != 0) {
-        client->interface = client_config->interface;
     }
     if (client_config->throughput_target_gbps != 0.0) {
         *((double *)&client->throughput_target_gbps) = client_config->throughput_target_gbps;

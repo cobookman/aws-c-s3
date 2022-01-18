@@ -50,7 +50,7 @@ static struct aws_http_connection_manager *s_s3_endpoint_create_http_connection_
     const struct aws_string *host_name,
     struct aws_client_bootstrap *client_bootstrap,
     const struct aws_tls_connection_options *tls_connection_options,
-    const char* interface,
+    const struct aws_string *interface,
     uint32_t max_connections);
 
 static void s_s3_endpoint_http_connection_manager_shutdown_callback(void *user_data);
@@ -124,13 +124,14 @@ static struct aws_http_connection_manager *s_s3_endpoint_create_http_connection_
     const struct aws_string *host_name,
     struct aws_client_bootstrap *client_bootstrap,
     const struct aws_tls_connection_options *tls_connection_options,
-    const char* interface,
+    const struct aws_string *interface,
     uint32_t max_connections) {
     AWS_PRECONDITION(endpoint);
     AWS_PRECONDITION(client_bootstrap);
     AWS_PRECONDITION(host_name);
 
     struct aws_byte_cursor host_name_cursor = aws_byte_cursor_from_string(host_name);
+    struct aws_byte_cursor interface_cursor = aws_byte_cursor_from_string(interface);
 
     /* Try to set up an HTTP connection manager. */
     struct aws_socket_options socket_options;
@@ -138,7 +139,7 @@ static struct aws_http_connection_manager *s_s3_endpoint_create_http_connection_
     socket_options.type = AWS_SOCKET_STREAM;
     socket_options.domain = AWS_SOCKET_IPV4;
     socket_options.connect_timeout_ms = s_connection_timeout_ms;
-    socket_options.interface = interface;
+    socket_options.interface = interface_cursor;
 
     struct proxy_env_var_settings proxy_ev_settings;
     AWS_ZERO_STRUCT(proxy_ev_settings);

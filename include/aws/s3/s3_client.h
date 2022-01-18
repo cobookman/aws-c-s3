@@ -98,8 +98,8 @@ struct aws_s3_client_config {
      * is ENABLED, this is required. Otherwise, this is optional. */
     struct aws_tls_connection_options *tls_connection_options;
 
-    /* If set, bind to a specific network interface */
-    const char* interface;
+    /* If set, have network traffic go over this specific network interface */
+    struct aws_byte_cursor interface;
 
     /* Signing options to be used for each request. Specify NULL to not sign requests. */
     struct aws_signing_config_aws *signing_config;
@@ -112,9 +112,6 @@ struct aws_s3_client_config {
 
     /* Throughput target in Gbps that we are trying to reach. */
     double throughput_target_gbps;
-
-    /* When set traffic will go over this interface */
-    struct aws_socket_endpoint local_endpoint;
 
     /* Retry strategy to use. If NULL, a default retry strategy will be used. */
     struct aws_retry_strategy *retry_strategy;
